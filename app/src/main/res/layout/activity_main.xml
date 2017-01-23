@@ -11,11 +11,30 @@
     tools:context="com.example.atack08.localizacion_mapas.MainActivity"
     android:orientation="vertical">
 
-    <Button android:id="@+id/botonLocalizar"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="LOCALIZAR"
-        android:layout_gravity="center"/>
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+
+        <Button android:id="@+id/botonLocalizar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LOCALIZAR"
+            android:onClick="localizar"
+            android:enabled="false"
+            />
+
+        <Button android:id="@+id/botonPosicionar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="POSICIONAR"
+            android:onClick="posicionar"
+            android:enabled="false"/>
+
+    </LinearLayout>
+
 
 
     <LinearLayout
@@ -57,14 +76,7 @@
 
     </LinearLayout>
 
-    <fragment
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
 
-
-    </fragment>
 
 
 </LinearLayout>

@@ -9,6 +9,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity
     private static int PETICION_PERMISO_LOCALIZACION;
 
     private GoogleApiClient clienteApi;
+    private EditText textoLatitud, textLongitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +40,23 @@ public class MainActivity extends AppCompatActivity
                 .addApi(LocationServices.API)
                 .build();
 
+        textoLatitud = (EditText)findViewById(R.id.textLatitud);
+        textLongitud = (EditText)findViewById(R.id.textLongitud);
+
 
     }
 
     public void updateUI(Location loc){
 
+        //IMPRIMIMOS LAS COORDENADAS SI LA LOCALIZACIÓN NO ES NULL
+        if(loc != null) {
+            textLongitud.setText(String.valueOf(loc.getLongitude()));
+            textoLatitud.setText(String.valueOf(loc.getLatitude()));
+        }
+        else{
+            textLongitud.setText("Desconocida");
+            textoLatitud.setText("Desconocida");
+        }
 
     }
 
@@ -82,6 +97,14 @@ public class MainActivity extends AppCompatActivity
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PETICION_PERMISO_LOCALIZACION);
 
         }
+        else{
+            //SI YA TIENE PERMISOS ASIGNADOS RECUPERAMOS LA ÚLTIMA POSICIÓN
+            Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(clienteApi);
+
+            //GENERAMOS LAS COORDENADAS
+            updateUI(lastLocation);
+            activarBotones();
+        }
 
 
 
@@ -101,6 +124,7 @@ public class MainActivity extends AppCompatActivity
 
                 //GENERAMOS LAS COORDENADAS
                 updateUI(lastLocation);
+                activarBotones();
             }
 
         }
@@ -110,5 +134,12 @@ public class MainActivity extends AppCompatActivity
         }
 
 
+    }
+
+
+    //MÉTODO QUE ACTIVA LOS BOTONES
+    public void activarBotones(){
+        ((Button)findViewById(R.id.botonLocalizar)).setEnabled(true);
+        ((Button)findViewById(R.id.botonPosicionar)).setEnabled(true);
     }
 }
