@@ -16,17 +16,22 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
 public class MainActivity extends AppCompatActivity
         implements GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks,
-        ActivityCompat.OnRequestPermissionsResultCallback{
+        ActivityCompat.OnRequestPermissionsResultCallback ,
+        OnMapReadyCallback{
 
     //CONSTANTES PARA LOS PERMISOS
     private static int PETICION_PERMISO_LOCALIZACION;
 
     private GoogleApiClient clienteApi;
     private EditText textoLatitud, textLongitud;
+    private GoogleMap mapa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,11 @@ public class MainActivity extends AppCompatActivity
 
         textoLatitud = (EditText)findViewById(R.id.textLatitud);
         textLongitud = (EditText)findViewById(R.id.textLongitud);
+
+
+        //MapFragment
+        MapFragment mapFragment = (MapFragment)getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
 
     }
@@ -141,5 +151,12 @@ public class MainActivity extends AppCompatActivity
     public void activarBotones(){
         ((Button)findViewById(R.id.botonLocalizar)).setEnabled(true);
         ((Button)findViewById(R.id.botonPosicionar)).setEnabled(true);
+    }
+
+    //MÉTODO IMPLEMENTADO DE LA INTERFACE OnMapReadyCallback
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mapa = googleMap;
     }
 }
